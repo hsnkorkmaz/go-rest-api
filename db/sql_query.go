@@ -10,16 +10,16 @@ import (
 
 var SQL_DB *sql.DB
 
-func SQL_Query(query string) *sql.Rows {
+func SQL_Query(query string, args ...interface{}) (*sql.Rows, error) {
 	err := openSqlConnection()
 	if err != nil {
-		fmt.Println("Error:", err)
+		return nil, err
 	}
-	rows, err := SQL_DB.Query(query)
+	rows, err := SQL_DB.Query(query, args...)
 	if err != nil {
-		fmt.Println("Error:", err)
+		return nil, err
 	}
-	return rows
+	return rows, nil
 }
 
 func openSqlConnection() error {
