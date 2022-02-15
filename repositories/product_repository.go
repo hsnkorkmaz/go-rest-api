@@ -16,14 +16,20 @@ func GetProducts() ([]models.Product, error) {
 	}
 
 	var products []models.Product
+	count := 0
 	for rows.Next() {
 		product, err := mapProduct(rows)
 		if err != nil {
 			return nil, err
 		}
 		products = append(products, *product)
+		count++
 	}
 	rows.Close()
+
+	if count == 0 {
+		return nil, fmt.Errorf("product not found")
+	}
 	return products, nil
 }
 
